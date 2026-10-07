@@ -7,11 +7,15 @@
 	let windDir, hum, feelsLike, tempMax, tempMin
 	let icon 
 	let iconLink
+	let aqi = null, aqiLabel = "", aqiColor = "", pm25 = ""
+
     const BASE_URL = new URL("https://api.openweathermap.org/data/2.5/weather");
+    const AQI_URL = new URL("https://api.openweathermap.org/data/2.5/air_pollution");
+    const API_KEY = "8a59485fc0098295507e55078609bfee";
     const params = {
 			units: "metric",
 			lang: "en",
-			appid: "8a59485fc0098295507e55078609bfee",
+			appid: API_KEY,
 		};
 
     const date = new Date()
@@ -25,7 +29,7 @@
     const [hour, minutes] = [addZero(date.getHours()), addZero(date.getMinutes())];
     const dateNow = `${hour}:${minutes} - ${hari}, ${day} ${month} ${year}`
 
-	function  windDirection(degree){
+	function windDirection(degree){
 		if (degree>337.5) return 'N';
 		if (degree>292.5) return 'NW';
 		if(degree>247.5) return 'W';
@@ -36,6 +40,30 @@
 		if(degree>22.5){return 'NE';}
 		return 'N';
 	}
+
+	const AQI_LEVELS = [
+		{ label: "Good",      color: "#00c853" },
+		{ label: "Fair",      color: "#aeea00" },
+		{ label: "Moderate",  color: "#ffd600" },
+		{ label: "Poor",      color: "#ff6d00" },
+		{ label: "Very Poor", color: "#d50000" },
+	];
+
+	function fetchAQI(lat, lon) {
+		const aqiParams = new URLSearchParams({ lat, lon, appid: API_KEY });
+		AQI_URL.search = aqiParams;
+		fetch(AQI_URL)
+			.then(r => r.json())
+			.then(data => {
+				const idx = data.list[0].main.aqi; // 1–5
+				aqi = idx;
+				aqiLabel = AQI_LEVELS[idx - 1].label;
+				aqiColor = AQI_LEVELS[idx - 1].color;
+				pm25 = data.list[0].components.pm2_5.toFixed(1) + " µg/m³";
+			})
+			.catch(err => console.log("AQI error:", err));
+	}
+
 	const searchCountry = () => {
 		if (event.code == "Enter" || event.code == "NumpadEnter") {
 			event.preventDefault();
@@ -52,12 +80,12 @@
 				.then((data) => {
                     console.log(data)
 					if (data.cod == "404" || data.cod == "400") {
-                        // alert("Not Found")
 						city = "City Not Found";
 						cloud = "";
 						temp = "";
 						windSpeed = "";
 						iconLink = ""
+						aqi = null; aqiLabel = ""; pm25 = "";
 					} else {
 						city = data.name;
 						cloud = data.weather[0].description;
@@ -72,7 +100,7 @@
 						tempMax = Math.round(data.main.temp_max) + '°C'
 						tempMin = Math.round(data.main.temp_min) + '°C'
 
-
+						fetchAQI(data.coord.lat, data.coord.lon);
 					}
 				})
 				.catch((err) => {
@@ -126,6 +154,8 @@
 					feelsLike = Math.round(data.main.feels_like) + '°C'
 					tempMax = Math.round(data.main.temp_max) + '°C'
 					tempMin = Math.round(data.main.temp_min) + '°C'
+
+					fetchAQI(lati, long);
 				}
 			})
 			.catch((err) => {
@@ -152,7 +182,7 @@
                     <h3>forecast</h3>
                 </div>
             </div>
-			
+		
             <div class="row m-0 pl-5" style="margin-top: 40%  !important;">
                 <div class="col-md-auto">
                     <h1 class="m-0 temp">{temp}</h1>
@@ -174,8 +204,6 @@
 
 <!-- RIGHT -->
 <div class="col-md-5 p-5 right">
-	
-	<!-- <h1>Right</h1> -->
 
     <input
 		class=""
@@ -207,7 +235,34 @@
 		</div>
 	</div>
 
-	<hr class="my-5">
+	<hr class="my-4">
+
+	<div class="row">
+		<div class="col">
+			<p style="font-weight: 500; letter-spacing: 2px;">Air Quality</p>
+		</div>
+	</div>
+
+	<div class="row mt-2">
+		<div class="col condition">
+			<p>AQI</p>
+			<p>Status</p>
+			<p>PM2.5</p>
+		</div>
+		<div class="col text-right">
+			<p>{aqi !== null ? aqi : '-'}</p>
+			<p>
+				{#if aqi !== null}
+					<span class="aqi-badge" style="background-color: {aqiColor};">{aqiLabel}</span>
+				{:else}
+					-
+				{/if}
+			</p>
+			<p>{pm25 || '-'}</p>
+		</div>
+	</div>
+
+	<hr class="my-4">
 
 	<div class="row">
 		<div class="col">
@@ -277,10 +332,6 @@
         letter-spacing: 2px;
 		margin-top: -20px;
     }
-	/* .col {
-		background-color: whitesmoke;
-		border-radius: 50px 0 0 50px;
-	} */
 
 	.bkg, .gradientEffect::after {
 		height: 80vh;
@@ -309,5 +360,15 @@
 	.overlay-text {
 		position: absolute;
         width: 100%;
+	}
+
+	.aqi-badge {
+		display: inline-block;
+		padding: 2px 10px;
+		border-radius: 12px;
+		font-size: 13px;
+		font-weight: 600;
+		color: #111;
+		letter-spacing: 1px;
 	}
 </style>
