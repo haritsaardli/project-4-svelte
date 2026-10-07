@@ -8,6 +8,18 @@
 	let icon 
 	let iconLink
 	let aqi = null, aqiLabel = "", aqiColor = "", pm25 = ""
+	let bgUrl = "https://loremflickr.com/1600/900/sky,weather"
+
+	function weatherToKeyword(conditionId) {
+		if (conditionId >= 200 && conditionId < 300) return "thunderstorm,lightning";
+		if (conditionId >= 300 && conditionId < 400) return "drizzle,rain";
+		if (conditionId >= 500 && conditionId < 600) return "rain,rainy";
+		if (conditionId >= 600 && conditionId < 700) return "snow,winter";
+		if (conditionId >= 700 && conditionId < 800) return "fog,mist";
+		if (conditionId === 800) return "sunny,clear sky";
+		if (conditionId > 800) return "cloudy,overcast";
+		return "sky,weather";
+	}
 
     const BASE_URL = new URL("https://api.openweathermap.org/data/2.5/weather");
     const AQI_URL = new URL("https://api.openweathermap.org/data/2.5/air_pollution");
@@ -100,6 +112,9 @@
 						tempMax = Math.round(data.main.temp_max) + '°C'
 						tempMin = Math.round(data.main.temp_min) + '°C'
 
+						const keyword = weatherToKeyword(data.weather[0].id);
+						bgUrl = `https://loremflickr.com/1600/900/${keyword}?random=${Date.now()}`;
+
 						fetchAQI(data.coord.lat, data.coord.lon);
 					}
 				})
@@ -155,6 +170,9 @@
 					tempMax = Math.round(data.main.temp_max) + '°C'
 					tempMin = Math.round(data.main.temp_min) + '°C'
 
+					const keyword = weatherToKeyword(data.weather[0].id);
+					bgUrl = `https://loremflickr.com/1600/900/${keyword}?random=${Date.now()}`;
+
 					fetchAQI(lati, long);
 				}
 			})
@@ -174,7 +192,7 @@
 <div class="col-md-7 p-0 left" style="height: 80vh;">
 	<div class="maintxt">
 		<div class="gradientEffect">
-			<img class="bkg img-fluid" src="screen-6.jpg" alt="" />
+			<img class="bkg img-fluid" src={bgUrl} alt="weather background" />
 		</div>
 		<div class="overlay-text h-100">
             <div class="row pl-5 m-0 mt-5">
@@ -335,7 +353,8 @@
 
 	.bkg, .gradientEffect::after {
 		height: 80vh;
-		object-fit: none;
+		object-fit: cover;
+		width: 100%;
 	}
 
 	h3 {
