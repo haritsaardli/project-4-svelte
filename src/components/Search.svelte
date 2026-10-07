@@ -8,17 +8,17 @@
 	let icon 
 	let iconLink
 	let aqi = null, aqiLabel = "", aqiColor = "", pm25 = ""
-	let bgUrl = "https://loremflickr.com/1600/900/sky,weather"
+	let bgUrl = "https://picsum.photos/seed/sky/1600/900"
 
 	function weatherToKeyword(conditionId) {
-		if (conditionId >= 200 && conditionId < 300) return "thunderstorm,lightning";
-		if (conditionId >= 300 && conditionId < 400) return "drizzle,rain";
-		if (conditionId >= 500 && conditionId < 600) return "rain,rainy";
-		if (conditionId >= 600 && conditionId < 700) return "snow,winter";
-		if (conditionId >= 700 && conditionId < 800) return "fog,mist";
-		if (conditionId === 800) return "sunny,clear sky";
-		if (conditionId > 800) return "cloudy,overcast";
-		return "sky,weather";
+		if (conditionId >= 200 && conditionId < 300) return "thunderstorm";
+		if (conditionId >= 300 && conditionId < 400) return "drizzle";
+		if (conditionId >= 500 && conditionId < 600) return "rain";
+		if (conditionId >= 600 && conditionId < 700) return "snow";
+		if (conditionId >= 700 && conditionId < 800) return "fog";
+		if (conditionId === 800) return "sunshine";
+		if (conditionId > 800) return "clouds";
+		return "sky";
 	}
 
     const BASE_URL = new URL("https://api.openweathermap.org/data/2.5/weather");
@@ -113,7 +113,7 @@
 						tempMin = Math.round(data.main.temp_min) + '°C'
 
 						const keyword = weatherToKeyword(data.weather[0].id);
-						bgUrl = `https://loremflickr.com/1600/900/${keyword}?random=${Date.now()}`;
+						bgUrl = `https://picsum.photos/seed/${keyword}${Date.now()}/1600/900`;
 
 						fetchAQI(data.coord.lat, data.coord.lon);
 					}
@@ -171,7 +171,7 @@
 					tempMin = Math.round(data.main.temp_min) + '°C'
 
 					const keyword = weatherToKeyword(data.weather[0].id);
-					bgUrl = `https://loremflickr.com/1600/900/${keyword}?random=${Date.now()}`;
+					bgUrl = `https://picsum.photos/seed/${keyword}${Date.now()}/1600/900`;
 
 					fetchAQI(lati, long);
 				}
