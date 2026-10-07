@@ -1,5 +1,7 @@
 # 🌤️ Weather + AQI App
 
+🔗 **Live Demo:** [project-4-svelte.haritsaardli.workers.dev](https://project-4-svelte.haritsaardli.workers.dev/)
+
 Aplikasi cuaca berbasis web yang menampilkan kondisi cuaca terkini beserta indeks kualitas udara (AQI) berdasarkan lokasi pengguna atau kota yang dicari.
 
 ## Fitur
