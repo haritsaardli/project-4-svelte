@@ -189,7 +189,7 @@
 	<link rel="icon" type="image/png" href="{iconLink}">
 </svelte:head>
 
-<div class="col-md-7 p-0 left" style="height: 80vh;">
+<div class="col-md-7 p-0 left panel-left">
 	<div class="maintxt">
 		<div class="gradientEffect">
 			<img class="bkg img-fluid" src={bgUrl} alt="weather background" />
@@ -201,27 +201,25 @@
                 </div>
             </div>
 		
-            <div class="row m-0 pl-5" style="margin-top: 40%  !important;">
-                <div class="col-md-auto">
+            <div class="row m-0 pl-5 weather-main-row">
+                <div class="col-md-auto col-auto">
                     <h1 class="m-0 temp">{temp}</h1>
                 </div>
-                <div class="col-md-auto justify-content-center align-self-center">
+                <div class="col-md-auto col justify-content-center align-self-center">
                     <h1 class="m-0 city">{city}</h1>
                     <h4 class="m-0 date">{dateNow}</h4>
                 </div>
-                <div class="col-md-auto justify-content-center align-self-center text-center">
-					<img src={iconLink} alt="" srcset="">
+                <div class="col-md-auto col-auto justify-content-center align-self-center text-center">
+					<img src={iconLink} alt="weather icon" srcset="">
                     <p class="mb-0 cloud">{cloud}</p>
                 </div>
             </div>
-
-
 		</div>
 	</div>
 </div>
 
 <!-- RIGHT -->
-<div class="col-md-5 p-5 right">
+<div class="col-md-5 p-5 p-sm-4 p-3 right panel-right">
 
     <input
 		class=""
@@ -330,38 +328,36 @@
 		width: 100%;
 	}
 	::placeholder {
-	color: #417d91;
+		color: #417d91;
 	}
 
-    .city{
-        font-size: 50px;
-        letter-spacing: 5px;
-        
-    }
-    .temp{
-        font-size: 100px;
-    }
-    .date{
-        font-size: 18px;
-        letter-spacing: 2px;
-    }
-    .cloud{
-        font-size: 15px;
-        letter-spacing: 2px;
+	.city{
+		font-size: 50px;
+		letter-spacing: 5px;
+	}
+	.temp{
+		font-size: 100px;
+	}
+	.date{
+		font-size: 18px;
+		letter-spacing: 2px;
+	}
+	.cloud{
+		font-size: 15px;
+		letter-spacing: 2px;
 		margin-top: -20px;
-    }
+	}
 
-	.bkg, .gradientEffect::after {
+	.panel-left {
+		height: 80vh;
+	}
+
+	.bkg {
 		height: 80vh;
 		object-fit: cover;
 		width: 100%;
 	}
 
-	h3 {
-		font-weight: 400;
-		letter-spacing: 5px;
-		color: whitesmoke;
-	}
 	.gradientEffect::after {
 		content: "";
 		left: 0;
@@ -372,13 +368,29 @@
 		display: inline-block;
 		background: #163b48b8;
 	}
+
+	/* push the weather info to the bottom of the left panel */
+	.weather-main-row {
+		position: absolute;
+		bottom: 2rem;
+		left: 0;
+		right: 0;
+	}
+
+	h3 {
+		font-weight: 400;
+		letter-spacing: 5px;
+		color: whitesmoke;
+	}
 	.maintxt {
 		position: relative;
+		height: 100%;
 	}
 	.maintxt > .gradientEffect,
 	.overlay-text {
 		position: absolute;
-        width: 100%;
+		width: 100%;
+		height: 100%;
 	}
 
 	.aqi-badge {
@@ -389,5 +401,64 @@
 		font-weight: 600;
 		color: #111;
 		letter-spacing: 1px;
+	}
+
+	/* ── Tablet (≤ 991px, Bootstrap md breakpoint) ── */
+	@media (max-width: 991px) {
+		.panel-left {
+			height: 50vw;
+			min-height: 260px;
+		}
+		.bkg {
+			height: 50vw;
+			min-height: 260px;
+		}
+		.temp {
+			font-size: 64px;
+		}
+		.city {
+			font-size: 32px;
+			letter-spacing: 3px;
+		}
+		.date {
+			font-size: 14px;
+		}
+	}
+
+	/* ── Mobile (≤ 576px) ── */
+	@media (max-width: 576px) {
+		.panel-left {
+			height: 60vw;
+			min-height: 220px;
+		}
+		.bkg {
+			height: 60vw;
+			min-height: 220px;
+		}
+		.temp {
+			font-size: 48px;
+		}
+		.city {
+			font-size: 22px;
+			letter-spacing: 2px;
+		}
+		.date {
+			font-size: 11px;
+			letter-spacing: 1px;
+		}
+		.cloud {
+			font-size: 12px;
+			margin-top: -10px;
+		}
+		h3 {
+			font-size: 14px;
+			letter-spacing: 3px;
+		}
+		.weather-main-row {
+			bottom: 1rem;
+		}
+		.panel-right {
+			padding: 1.5rem !important;
+		}
 	}
 </style>

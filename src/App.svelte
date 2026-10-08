@@ -8,8 +8,8 @@
 </svelte:head>
 
 <main>
-	<div class="container-fluid" style="padding: 10vh;">
-		<div class="row ">
+	<div class="container-fluid main-container">
+		<div class="row">
 			<Weather/>
 		</div>
 	</div>
@@ -17,13 +17,18 @@
 </main>
 
 <style>
-	/* .row{
-		background-color: whitesmoke;
-	} */
-
 	main {
 		color: white;
 		font-family: 'Lato', sans-serif;
 	}
 
+	.main-container {
+		padding: 5vh 5vw;
+	}
+
+	@media (max-width: 768px) {
+		.main-container {
+			padding: 0;
+		}
+	}
 </style>
