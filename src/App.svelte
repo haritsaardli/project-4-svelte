@@ -9,7 +9,7 @@
 
 <main>
 	<div class="container-fluid main-container">
-		<div class="row">
+		<div class="row align-items-stretch weather-row">
 			<Weather/>
 		</div>
 	</div>

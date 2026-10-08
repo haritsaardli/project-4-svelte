@@ -349,11 +349,13 @@
 	}
 
 	.panel-left {
-		height: 80vh;
+		height: 100%;
+		min-height: 400px;
 	}
 
 	.bkg {
-		height: 80vh;
+		height: 100%;
+		min-height: 400px;
 		object-fit: cover;
 		width: 100%;
 	}
