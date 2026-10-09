@@ -21,20 +21,35 @@
 		color: white;
 		font-family: 'Lato', sans-serif;
 		min-height: 100vh;
+		min-height: 100svh;
 		display: flex;
 		align-items: center;
 	}
 
 	.main-container {
-		padding: 2rem 5vw;
+		padding: clamp(1.25rem, 4vw, 3.5rem);
 		width: 100%;
-		max-width: 1200px;
+		max-width: 1500px;
+		margin-inline: auto;
 	}
 
 	.weather-row {
-		border-radius: 16px;
+		border-radius: 20px;
 		overflow: hidden;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+		box-shadow: 0 16px 48px rgba(0, 0, 0, 0.38);
+	}
+
+	@media (max-width: 991px) {
+		main {
+			align-items: flex-start;
+		}
+		.main-container {
+			max-width: 860px;
+			padding: clamp(1rem, 3vw, 1.75rem);
+		}
+		.weather-row {
+			border-radius: 18px;
+		}
 	}
 
 	@media (max-width: 768px) {

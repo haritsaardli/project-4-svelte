@@ -320,7 +320,7 @@
 	}
 
 	.panel-right {
-		padding: 2rem !important;
+		padding: clamp(1.5rem, 3vw, 2.5rem) !important;
 	}
 
 	.panel-right p {
@@ -447,27 +447,45 @@
 		letter-spacing: 1px;
 	}
 
-	/* ── Tablet (≤ 991px, Bootstrap md breakpoint) ── */
-	@media (max-width: 991px) {
+	/* Tablet: stack the panels before the two-column layout gets cramped. */
+	@media (min-width: 577px) and (max-width: 991px) {
+		.panel-left,
+		.panel-right {
+			flex: 0 0 100%;
+			max-width: 100%;
+		}
 		.panel-left {
-			min-height: 320px;
+			min-height: clamp(300px, 42vw, 400px);
+		}
+		.panel-right {
+			padding: clamp(1.5rem, 4vw, 2.25rem) !important;
 		}
 		.overlay-text {
-			padding: 2rem 1.5rem;
-		}
-		.temp {
-			font-size: 64px;
-		}
-		.city {
-			font-size: 32px;
-			letter-spacing: 3px;
-		}
-		.date {
-			font-size: 14px;
+			padding: clamp(1.5rem, 4vw, 2.25rem);
 		}
 	}
 
-	/* ── Mobile (≤ 576px) ── */
+	/* Wide tablet / compact laptop: keep the two columns balanced. */
+	@media (min-width: 992px) and (max-width: 1199px) {
+		.panel-left {
+			min-height: 400px;
+		}
+		.panel-right {
+			padding: 1.5rem !important;
+		}
+		.overlay-text {
+			padding: 1.75rem;
+		}
+		.temp {
+			font-size: 68px;
+		}
+		.city {
+			font-size: 32px;
+			letter-spacing: 2px;
+		}
+	}
+
+	/* Mobile (≤ 576px) */
 	@media (max-width: 576px) {
 		.panel-left {
 			min-height: 260px;
