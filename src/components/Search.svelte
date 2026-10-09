@@ -192,26 +192,28 @@
 <div class="col-md-7 p-0 left panel-left">
 	<div class="maintxt">
 		<div class="gradientEffect">
-			<img class="bkg img-fluid" src={bgUrl} alt="weather background" />
+			<img class="bkg" src={bgUrl} alt="weather background" />
 		</div>
-		<div class="overlay-text h-100">
-            <div class="row pl-5 m-0 mt-5">
-                <div class="col">
+		<div class="overlay-text">
+            <div class="row m-0">
+                <div class="col p-0">
                     <h3>forecast</h3>
                 </div>
             </div>
 		
-            <div class="row m-0 pl-5 weather-main-row">
-                <div class="col-md-auto col-auto">
-                    <h1 class="m-0 temp">{temp}</h1>
-                </div>
-                <div class="col-md-auto col justify-content-center align-self-center">
-                    <h1 class="m-0 city">{city}</h1>
-                    <h4 class="m-0 date">{dateNow}</h4>
-                </div>
-                <div class="col-md-auto col-auto justify-content-center align-self-center text-center">
-					<img src={iconLink} alt="weather icon" srcset="">
-                    <p class="mb-0 cloud">{cloud}</p>
+            <div class="weather-main-row">
+                <div class="d-flex align-items-center flex-wrap">
+                    <h1 class="m-0 temp mr-3">{temp}</h1>
+                    <div class="weather-city-date mr-3">
+                        <h1 class="m-0 city">{city}</h1>
+                        <h4 class="m-0 date">{dateNow}</h4>
+                    </div>
+                    <div class="weather-condition-badge d-flex align-items-center ml-auto">
+						{#if iconLink}
+							<img src={iconLink} alt="weather icon" class="weather-icon mr-1">
+						{/if}
+                        <p class="mb-0 cloud">{cloud}</p>
+                    </div>
                 </div>
             </div>
 		</div>
@@ -219,7 +221,7 @@
 </div>
 
 <!-- RIGHT -->
-<div class="col-md-5 p-5 p-sm-4 p-3 right panel-right">
+<div class="col-md-5 p-4 right panel-right">
 
     <input
 		class=""
@@ -228,13 +230,13 @@
 		placeholder="Find City"
 	/>
 
-	<div class="row mt-5">
+	<div class="row mt-3">
 		<div class="col">
-			<p style="font-weight: 500; letter-spacing: 2px;">Weather Detail</p>
+			<p class="section-title">Weather Detail</p>
 		</div>
 	</div>
 
-	<div class="row mt-2">
+	<div class="row mt-1">
 		<div class="col condition">
 			<p>City</p>
 			<p>Condition</p>
@@ -246,20 +248,20 @@
 			<p>{city}</p>
 			<p>{cloud}</p>
 			<p>{temp}</p>
-			<p>{windSpeed} {windDir}</p>
-			<p>{hum}</p>
+			<p>{windSpeed}{windDir ? ' ' + windDir : ''}</p>
+			<p>{hum || '-'}</p>
 		</div>
 	</div>
 
-	<hr class="my-4">
+	<hr class="my-3">
 
 	<div class="row">
 		<div class="col">
-			<p style="font-weight: 500; letter-spacing: 2px;">Air Quality</p>
+			<p class="section-title">Air Quality</p>
 		</div>
 	</div>
 
-	<div class="row mt-2">
+	<div class="row mt-1">
 		<div class="col condition">
 			<p>AQI</p>
 			<p>Status</p>
@@ -278,15 +280,15 @@
 		</div>
 	</div>
 
-	<hr class="my-4">
+	<hr class="my-3">
 
 	<div class="row">
 		<div class="col">
-			<p style="font-weight: 500; letter-spacing: 2px;">Temperature Detail</p>
+			<p class="section-title">Temperature Detail</p>
 		</div>
 	</div>
 
-	<div class="row mt-2">
+	<div class="row mt-1">
 		<div class="col condition">
 			<p>Feels Like</p>
 			<p>Max</p>
@@ -294,9 +296,9 @@
 			
 		</div>
 		<div class="col text-right">
-			<p>{feelsLike}</p>
-			<p>{tempMax}</p>
-			<p>{tempMin}</p>
+			<p>{feelsLike || '-'}</p>
+			<p>{tempMax || '-'}</p>
+			<p>{tempMin || '-'}</p>
 		</div>
 	</div>
 
@@ -304,18 +306,40 @@
 </div>
 
 <style>
-	hr{
-		border-top: 2px solid #417d91;
+	hr {
+		border-top: 1px solid #417d91;
+		margin-top: 1rem;
+		margin-bottom: 1rem;
 	}
-	.left{
+	.left {
 		text-shadow: 0 0 10px #00000087;
 	}
 
-	.right{
+	.right {
 		background-color: #1a3e4a;
 	}
 
-	.condition{
+	.panel-right {
+		padding: 2rem !important;
+	}
+
+	.panel-right p {
+		margin-bottom: 0.25rem;
+		font-size: 15px;
+	}
+
+	.section-title {
+		font-weight: 500;
+		letter-spacing: 2px;
+		margin-bottom: 0.4rem;
+	}
+
+	.weather-icon {
+		width: 45px;
+		height: 45px;
+	}
+
+	.condition {
 		color: #cecece;
 	}
 
@@ -332,32 +356,41 @@
 	}
 
 	.city{
-		font-size: 50px;
-		letter-spacing: 5px;
+		font-size: 40px;
+		letter-spacing: 4px;
 	}
 	.temp{
-		font-size: 100px;
+		font-size: 80px;
 	}
 	.date{
-		font-size: 18px;
+		font-size: 15px;
 		letter-spacing: 2px;
 	}
 	.cloud{
 		font-size: 15px;
 		letter-spacing: 2px;
-		margin-top: -20px;
 	}
 
 	.panel-left {
-		height: 100%;
-		min-height: 400px;
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		min-height: 420px;
 	}
 
 	.bkg {
-		height: 100%;
-		min-height: 400px;
-		object-fit: cover;
 		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.gradientEffect {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 	}
 
 	.gradientEffect::after {
@@ -367,32 +400,41 @@
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		display: inline-block;
+		display: block;
 		background: #163b48b8;
 	}
 
-	/* push the weather info to the bottom of the left panel */
+	/* weather info stays at the bottom of the left panel */
 	.weather-main-row {
-		position: absolute;
-		bottom: 2rem;
-		left: 0;
-		right: 0;
+		margin-top: auto;
 	}
 
 	h3 {
 		font-weight: 400;
 		letter-spacing: 5px;
 		color: whitesmoke;
+		margin: 0;
 	}
 	.maintxt {
 		position: relative;
-		height: 100%;
-	}
-	.maintxt > .gradientEffect,
-	.overlay-text {
-		position: absolute;
+		flex: 1 1 auto;
+		display: flex;
+		flex-direction: column;
 		width: 100%;
 		height: 100%;
+		overflow: hidden;
+	}
+	.overlay-text {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		width: 100%;
+		height: 100%;
+		flex: 1 1 auto;
+		padding: 2.25rem;
+		box-sizing: border-box;
 	}
 
 	.aqi-badge {
@@ -408,12 +450,10 @@
 	/* ── Tablet (≤ 991px, Bootstrap md breakpoint) ── */
 	@media (max-width: 991px) {
 		.panel-left {
-			height: 50vw;
-			min-height: 260px;
+			min-height: 320px;
 		}
-		.bkg {
-			height: 50vw;
-			min-height: 260px;
+		.overlay-text {
+			padding: 2rem 1.5rem;
 		}
 		.temp {
 			font-size: 64px;
@@ -430,12 +470,10 @@
 	/* ── Mobile (≤ 576px) ── */
 	@media (max-width: 576px) {
 		.panel-left {
-			height: 60vw;
-			min-height: 220px;
+			min-height: 260px;
 		}
-		.bkg {
-			height: 60vw;
-			min-height: 220px;
+		.overlay-text {
+			padding: 1.5rem 1rem;
 		}
 		.temp {
 			font-size: 48px;
@@ -455,9 +493,6 @@
 		h3 {
 			font-size: 14px;
 			letter-spacing: 3px;
-		}
-		.weather-main-row {
-			bottom: 1rem;
 		}
 		.panel-right {
 			padding: 1.5rem !important;
